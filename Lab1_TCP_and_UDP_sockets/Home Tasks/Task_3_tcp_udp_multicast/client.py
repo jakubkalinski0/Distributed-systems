@@ -61,7 +61,7 @@ def main():
             break
         if line.startswith("U "):
             msg = line[2:]
-            udp_sock.sendto(msg.encode("utf-8"), (args.host, args.port))
+            udp_sock.sendto(msg.encode("utf-8"), (args.host, args.port + 1))
         elif line.startswith("M "):
             msg = line[2:]
             mcast_send.sendto(f"{args.nick}: {msg}".encode("utf-8"), (args.multicast_group, args.port))

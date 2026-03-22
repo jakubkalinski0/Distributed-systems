@@ -84,8 +84,9 @@ class ChatServer:
 
     def _udp_loop(self) -> None:
         udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        udp_sock.bind((self.bind, self.port))
-        print(f"[UDP] listening on {self.bind}:{self.port}")
+        udp_port = self.port + 1
+        udp_sock.bind((self.bind, udp_port))
+        print(f"[UDP] listening on {self.bind}:{udp_port}")
 
         while True:
             data, addr = udp_sock.recvfrom(65535)
