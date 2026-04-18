@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Country Info Comparator</title>
+</head>
+<body>
+  <h1>Country Comparator</h1>
+  <p>Compare two countries using REST Countries + World Bank.</p>
+
+  <form id="analyze-form" method="post" action="/analyze">
+    <label for="country_a">Country A:</label>
+    <input id="country_a" name="country_a" type="text" minlength="2" maxlength="80" required />
+    <br /><br />
+
+    <label for="country_b">Country B:</label>
+    <input id="country_b" name="country_b" type="text" minlength="2" maxlength="80" required />
+    <br /><br />
+
+    <label for="from_year">From year:</label>
+    <input id="from_year" name="from_year" type="number" min="1960" max="2100" value="2018" />
+    <br /><br />
+
+    <label for="to_year">To year:</label>
+    <input id="to_year" name="to_year" type="number" min="1960" max="2100" value="2024" />
+    <br /><br />
+
+    <label for="x_api_key">API key (optional):</label>
+    <input id="x_api_key" name="x_api_key" type="password" autocomplete="off" />
+    <br /><br />
+
+    <button type="submit">Analyze</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("analyze-form");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const apiKey = (formData.get("x_api_key") || "").toString().trim();
+      formData.delete("x_api_key");
+
+      const headers = {};
+      if (apiKey) {
+        headers["X-API-Key"] = apiKey;
+      }
+
+      const response = await fetch("/analyze", {
+        method: "POST",
+        headers,
+        body: formData,
+      });
+
+      const html = await response.text();
+      document.open();
+      document.write(html);
+      document.close();
+    });
+  </script>
+</body>
+</html>
