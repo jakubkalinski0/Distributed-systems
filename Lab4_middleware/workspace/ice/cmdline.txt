@@ -1,2 +1,0 @@
-java -cp "target/classes/:target/lib/*" sr.ice.server.IceServer --Ice.Config=server.config
-java -cp "target/classes/:target/lib/*" sr.ice.client.IceClient --Ice.Config=client.config
