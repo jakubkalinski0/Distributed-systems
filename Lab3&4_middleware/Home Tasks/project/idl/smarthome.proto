@@ -1,0 +1,72 @@
+// Protobuf IDL dla zadania I1 - "Wywolanie dynamiczne".
+//
+// Wymagania pokrywane przez ten plik:
+//  - co najmniej 3 rozne operacje (ListDevices, SetMode, StreamReadings),
+//  - co najmniej jedno wywolanie strumieniowe (StreamReadings: server-streaming),
+//  - co najmniej jeden nietrywialny typ (DeviceStatus: map<string,string> + enum + repeated).
+//
+// Klient Python NIE uzywa stubow generowanych z tego pliku - korzysta z gRPC Server Reflection
+// i buduje typy wiadomosci w runtime przez google.protobuf.descriptor_pool.
+
+syntax = "proto3";
+
+package smarthome.dyn;
+
+option java_multiple_files = true;
+option java_package         = "smarthome.grpc.proto";
+option java_outer_classname = "SmartHomeProto";
+
+// ---------- Service ----------
+
+service DeviceService {
+    // Zwraca liste urzadzen z opcjonalnym filtrem po polu "kind" (np. "Light"/"Thermostat").
+    rpc ListDevices    (ListRequest)    returns (DeviceList);
+
+    // Zmienia tryb pracy termostatu lub innego urzadzenia obslugujacego enum Mode.
+    // Bledy: NOT_FOUND (nieznane id), INVALID_ARGUMENT (urzadzenie nie wspiera Mode).
+    rpc SetMode        (SetModeRequest) returns (DeviceStatus);
+
+    // Server-streaming: emituje "samples" odczytow co intervalMs ms.
+    rpc StreamReadings (StreamRequest)  returns (stream Reading);
+}
+
+// ---------- Messages ----------
+
+enum Mode {
+    OFF      = 0;
+    HEATING  = 1;
+    COOLING  = 2;
+}
+
+message ListRequest {
+    string kindFilter = 1;
+}
+
+message DeviceList {
+    repeated DeviceStatus devices = 1;
+}
+
+message DeviceStatus {
+    string id   = 1;
+    string kind = 2;
+    bool   on   = 3;
+    // Mapa atrybutow specyficznych dla typu (brightness, color, target, mode, ptz, ...)
+    map<string, string> attributes = 4;
+}
+
+message SetModeRequest {
+    string deviceId = 1;
+    Mode   mode     = 2;
+}
+
+message StreamRequest {
+    string deviceId   = 1;
+    int32  samples    = 2;
+    int32  intervalMs = 3;
+}
+
+message Reading {
+    string deviceId    = 1;
+    double value       = 2;
+    int64  timestampMs = 3;
+}

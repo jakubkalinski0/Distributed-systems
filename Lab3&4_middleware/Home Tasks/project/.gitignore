@@ -1,0 +1,11 @@
+# Java / Maven
+server-java/target/
+server-java/.idea/
+server-java/*.iml
+server-java/dependency-reduced-pom.xml
+
+# Python
+client-python/.venv/
+client-python/__pycache__/
+client-python/**/__pycache__/
+client-python/*.pyc
