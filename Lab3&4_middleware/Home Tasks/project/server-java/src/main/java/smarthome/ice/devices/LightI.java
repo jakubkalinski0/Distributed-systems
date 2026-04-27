@@ -13,7 +13,6 @@ public class LightI extends BaseDeviceI implements Light {
         this(building, id, "Light", initialPower, initialBrightness);
     }
 
-    /** Konstruktor pakietowy uzywany takze przez ColorLightI (zeby DeviceInfo.kind == "ColorLight"). */
     protected LightI(String building, String id, String kind, PowerState initialPower, int initialBrightness) {
         super(building, id, kind, initialPower);
         this.brightness = clamp(initialBrightness);

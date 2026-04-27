@@ -1,30 +1,7 @@
-"""
-Dynamiczny klient gRPC dla zadania I1.
-
-KLUCZOWE: ten modul NIE importuje zadnego stuba wygenerowanego z 'smarthome.proto'.
-Klient odkrywa schemat uslugi w runtime przez gRPC Server Reflection i dynamicznie
-buduje klasy wiadomosci poprzez google.protobuf.descriptor_pool / message_factory.
-
-Dozwolone importy z gRPC/protobuf (te SAME, ktorych uzywaja grpcurl/Postman):
-  - grpc
-  - grpc_reflection.v1alpha.reflection_pb2{,_grpc}      (narzedziowy stub Reflection)
-  - google.protobuf.descriptor_pb2                      (parsowanie FileDescriptorProto)
-  - google.protobuf.descriptor_pool                     (pool deskryptorow)
-  - google.protobuf.message_factory                     (wytwarzanie klas wiadomosci)
-
-Operacje (wszystkie 3 wymagane przez I1):
-  discover  - listuje uslugi i metody odkryte przez Reflection
-  list      - DeviceService.ListDevices(ListRequest)              [unary]
-  setmode   - DeviceService.SetMode(SetModeRequest)               [unary]
-  stream    - DeviceService.StreamReadings(StreamRequest)         [server-streaming]
-"""
-
 from __future__ import annotations
 
 import argparse
-import sys
-import time
-from typing import Iterable, Iterator
+from typing import Iterator
 
 import grpc
 from google.protobuf import descriptor_pb2, descriptor_pool, message_factory
@@ -34,13 +11,7 @@ from grpc_reflection.v1alpha import reflection_pb2, reflection_pb2_grpc
 SERVICE_FQN = "smarthome.dyn.DeviceService"
 
 
-# ---------------------------------------------------------------------------
-# Klient Reflection: pobiera FileDescriptorProto wszystkich plikow .proto
-# zawierajacych podany symbol i sklada je w DescriptorPool.
-# ---------------------------------------------------------------------------
-
 class DynamicSchema:
-    """Pakuje DescriptorPool + ServiceDescriptor dla jednej uslugi."""
 
     def __init__(self, channel: grpc.Channel, service_fqn: str):
         self.channel = channel
@@ -48,13 +19,8 @@ class DynamicSchema:
         self.pool = descriptor_pool.DescriptorPool()
         self._reflection = reflection_pb2_grpc.ServerReflectionStub(channel)
 
-        # 1) Pobieramy wszystkie pliki potrzebne do zdefiniowania naszej uslugi.
         files = self._fetch_files_for_symbol(service_fqn)
-
-        # 2) Dodajemy je do poolu z prosta retry-loop, gdyby kolejnosc zaleznosci byla zla.
         self._add_files_to_pool(files)
-
-        # 3) Wyciagamy sam ServiceDescriptor z poolu - to jest nasz "interfejs" w runtime.
         self.service = self.pool.FindServiceByName(service_fqn)
 
     def _fetch_files_for_symbol(self, symbol: str) -> list[descriptor_pb2.FileDescriptorProto]:
@@ -76,7 +42,6 @@ class DynamicSchema:
         pending = list(files)
         last_error: Exception | None = None
         added: set[str] = set()
-        # Maks N pelnych przebiegow - w praktyce wystarczy 1-2 zeby rozwiazac zaleznosci.
         for _ in range(len(files) + 1):
             still_pending: list[descriptor_pb2.FileDescriptorProto] = []
             progress = False
@@ -87,7 +52,7 @@ class DynamicSchema:
                     self.pool.Add(fd)
                     added.add(fd.name)
                     progress = True
-                except (TypeError, KeyError, Exception) as ex:  # noqa: BLE001
+                except Exception as ex:
                     last_error = ex
                     still_pending.append(fd)
             pending = still_pending
@@ -100,12 +65,10 @@ class DynamicSchema:
             raise RuntimeError(f"Cannot add files to pool: {names} (last error: {last_error})")
 
     def message_class(self, fully_qualified_name: str):
-        """Zwraca klase wiadomosci (potomka google.protobuf.message.Message) dla danej nazwy."""
         descriptor = self.pool.FindMessageTypeByName(fully_qualified_name)
         return message_factory.GetMessageClass(descriptor)
 
     def call_path(self, method_name: str) -> str:
-        """Zwraca path uzywany w grpc.Channel.unary_*: '/<full.service>/<Method>'."""
         return f"/{self.service.full_name}/{method_name}"
 
     def method(self, method_name: str):
@@ -115,18 +78,12 @@ class DynamicSchema:
         raise KeyError(method_name)
 
 
-# ---------------------------------------------------------------------------
-# Funkcje wywolawcze (unary i server-streaming) - operuja wylacznie na
-# obiektach pochodzacych z DescriptorPool.
-# ---------------------------------------------------------------------------
-
 def call_unary(channel: grpc.Channel, schema: DynamicSchema, method_name: str, request_msg):
     method = schema.method(method_name)
     InputCls = schema.message_class(method.input_type.full_name)
     OutputCls = schema.message_class(method.output_type.full_name)
 
     if not isinstance(request_msg, InputCls):
-        # Pomocniczy guard - laczyl sie nieoczekiwany typ?
         raise TypeError(f"Expected {InputCls.DESCRIPTOR.full_name}, got {type(request_msg)}")
 
     rpc = channel.unary_unary(
@@ -148,10 +105,6 @@ def call_server_stream(channel: grpc.Channel, schema: DynamicSchema, method_name
     return rpc(request_msg)
 
 
-# ---------------------------------------------------------------------------
-# Komendy CLI
-# ---------------------------------------------------------------------------
-
 def cmd_discover(channel: grpc.Channel) -> None:
     stub = reflection_pb2_grpc.ServerReflectionStub(channel)
     req = reflection_pb2.ServerReflectionRequest(list_services="")
@@ -164,7 +117,6 @@ def cmd_discover(channel: grpc.Channel) -> None:
         for s in services:
             print(f"    - {s.name}")
             if s.name == SERVICE_FQN:
-                # Zaglebiamy sie tylko w nasza usluge - listujemy metody z deskryptora.
                 schema = DynamicSchema(channel, s.name)
                 for m in schema.service.methods:
                     arrow = "stream" if m.server_streaming else "unary"
@@ -188,7 +140,6 @@ def cmd_list(channel: grpc.Channel, kind_filter: str = "") -> None:
 def cmd_setmode(channel: grpc.Channel, device_id: str, mode_name: str) -> None:
     schema = DynamicSchema(channel, SERVICE_FQN)
     SetModeRequest = schema.message_class("smarthome.dyn.SetModeRequest")
-    # Enum 'Mode' zostal odkryty dynamicznie - mamy do niego deskryptor.
     mode_descriptor = schema.pool.FindEnumTypeByName("smarthome.dyn.Mode")
     if mode_name not in [v.name for v in mode_descriptor.values]:
         names = [v.name for v in mode_descriptor.values]
@@ -217,10 +168,6 @@ def cmd_stream(channel: grpc.Channel, device_id: str, samples: int, interval_ms:
     except grpc.RpcError as ex:
         print(f"  ! REMOTE gRPC error: code={ex.code().name} details={ex.details()!r}")
 
-
-# ---------------------------------------------------------------------------
-# Maly REPL
-# ---------------------------------------------------------------------------
 
 HELP = """\
 Komendy:
@@ -266,20 +213,15 @@ def repl(channel: grpc.Channel) -> None:
             print(f"  ! gRPC error: code={ex.code().name} details={ex.details()!r}")
 
 
-# ---------------------------------------------------------------------------
-# Bootstrap
-# ---------------------------------------------------------------------------
-
 def main() -> int:
     parser = argparse.ArgumentParser(description="Dynamic gRPC client (no compiled stubs)")
     parser.add_argument("--address", default="localhost:50051", help="host:port serwera gRPC")
-    parser.add_argument("command", nargs="?", default=None, help="opcjonalna pojedyncza komenda do wywolania")
-    parser.add_argument("rest", nargs=argparse.REMAINDER, help="argumenty komendy")
+    parser.add_argument("command", nargs="?", default=None)
+    parser.add_argument("rest", nargs=argparse.REMAINDER)
     args = parser.parse_args()
 
     print(f"[client] connecting to {args.address} (insecure)")
     with grpc.insecure_channel(args.address) as channel:
-        # Mala weryfikacja - jak gRPC reflection nie odpowie szybko, wyswietl jasny blad.
         try:
             grpc.channel_ready_future(channel).result(timeout=3)
         except grpc.FutureTimeoutError:
@@ -287,7 +229,6 @@ def main() -> int:
         if args.command is None:
             repl(channel)
         else:
-            # Tryb non-interactive: jedna komenda i wyjscie.
             line = " ".join([args.command, *args.rest])
             parts = line.split()
             cmd, rest = parts[0], parts[1:]

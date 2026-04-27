@@ -20,15 +20,10 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * Implementacja uslugi gRPC z (zalozonym) zestawem urzadzen pamiectowych.
- * Kazda metoda loguje wywolanie w formacie analogicznym do servantow Ice.
- */
 public class DeviceServiceImpl extends DeviceServiceGrpc.DeviceServiceImplBase {
 
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    /** Hardcoded "domena" - 6 urzadzen, wystarczajaca do demonstracji wszystkich 3 RPC. */
     private final Map<String, AtomicReference<DeviceStatus>> devices = new ConcurrentHashMap<>();
 
     public DeviceServiceImpl() {
@@ -120,8 +115,6 @@ public class DeviceServiceImpl extends DeviceServiceGrpc.DeviceServiceImplBase {
             resp.onError(Status.CANCELLED.withCause(ex).asRuntimeException());
         }
     }
-
-    // ---------- helpers ----------
 
     private void seed(String id, String kind, boolean on, Map<String, String> attrs) {
         DeviceStatus.Builder b = DeviceStatus.newBuilder()

@@ -17,11 +17,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Servant interfejsu Building - "rejestr" widoczny pod identity "building"
- * w obrebie pojedynczego serwera Ice. Klient pobiera proxy do urzadzen
- * przez getDevice(id) i dalej kasuje na konkretny podtyp.
- */
 public class BuildingI implements Building {
 
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -35,7 +30,6 @@ public class BuildingI implements Building {
         this.adapter = adapter;
     }
 
-    /** Rejestruje servanta w adapterze pod podanym identity i zapamietuje go w mapie. */
     public void addDevice(String id, Device impl) {
         devices.put(id, impl);
         adapter.add((Object) impl, Util.stringToIdentity(id));

@@ -1,19 +1,3 @@
-"""
-Klient A1 (Ice) - interaktywny REPL CLI.
-
-Pokrywa wymagania:
-  - laczy sie z >= 2 serwerami Ice (kazdy ma identity 'building'),
-  - listuje >= 10 urzadzen z obu serwerow,
-  - przelacza sie miedzy urzadzeniami bez restartu (REPL),
-  - wykrywa podtypy przez *Prx.checkedCast,
-  - wyswietla wyjatki zdalne wraz z ich typem i polem (DeviceError / InvalidParameter / DeviceUnavailable).
-
-Uruchomienie (z venv):
-    python ice_client.py \
-        --proxy "building:tcp -h localhost -p 10000" \
-        --proxy "building:tcp -h localhost -p 10001"
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -22,13 +6,12 @@ import sys
 import time
 from typing import Iterable
 
-# Sciezka do wygenerowanych przez slice2py modulow (osobny katalog od kodu klienta).
 _GEN = os.path.join(os.path.dirname(os.path.abspath(__file__)), "generated")
 if _GEN not in sys.path:
     sys.path.insert(0, _GEN)
 
-import Ice  # noqa: E402  (z PyPI: zeroc-ice)
-import smarthome  # noqa: E402 (modul wygenerowany ze smarthome.ice)
+import Ice
+import smarthome
 
 
 def _ts() -> str:
@@ -40,7 +23,6 @@ def log(msg: str) -> None:
 
 
 def connect_buildings(communicator: Ice.Communicator, proxies: Iterable[str]):
-    """Dla kazdego stringa proxy probuje uzyskac BuildingPrx i pobiera nazwe budynku."""
     buildings = []
     for s in proxies:
         try:
@@ -58,7 +40,6 @@ def connect_buildings(communicator: Ice.Communicator, proxies: Iterable[str]):
 
 
 def list_all(buildings) -> dict:
-    """Listuje urzadzenia z kazdego serwera. Zwraca mape device_id -> (building_name, BuildingPrx)."""
     print()
     index: dict[str, tuple[str, smarthome.BuildingPrx]] = {}
     for name, b in buildings:
@@ -76,7 +57,6 @@ def list_all(buildings) -> dict:
 
 
 def cast_to_concrete(base: smarthome.DevicePrx):
-    """Probuje wykryc rzeczywisty podtyp wedlug hierarchii Slice (od najbardziej szczegolowego)."""
     cl = smarthome.ColorLightPrx.checkedCast(base)
     if cl is not None:
         return "ColorLight", cl
@@ -126,7 +106,6 @@ def show_device_menu(kind: str) -> str:
 
 
 def operate(device_id: str, kind: str, prx) -> None:
-    """Maly REPL na wybranym urzadzeniu. Zamykany komenda 'back'."""
     print()
     print(f"--- operating on {device_id} ({kind}) ---")
     print(show_device_menu(kind))
@@ -229,7 +208,6 @@ def main_menu(buildings) -> None:
         elif cmd in ("d", "device") and len(parts) >= 2:
             _open_device(parts[1], buildings, index)
         elif cmd in index:
-            # syntactic sugar: device_id direct
             _open_device(cmd, buildings, index)
         else:
             print(f"  ! nieznane polecenie: {line!r}")
@@ -237,7 +215,6 @@ def main_menu(buildings) -> None:
 
 def _open_device(device_id: str, buildings, index) -> None:
     if device_id not in index:
-        # odswiez liste, moze pojawilo sie nowe urzadzenie
         index.update(list_all(buildings))
         if device_id not in index:
             print(f"  ! brak urzadzenia o id={device_id}")
@@ -261,13 +238,10 @@ def main() -> int:
         "--proxy",
         action="append",
         required=True,
-        help='stringified proxy do Building, np. "building:tcp -h localhost -p 10000". Mozna podac wielokrotnie.',
+        help='stringified proxy do Building, np. "building:tcp -h localhost -p 10000"',
     )
     args, ice_args = parser.parse_known_args()
 
-    # Ice komunikator parsuje swoje wlasne flagi (--Ice.*) z sys.argv;
-    # wyzej zostawiamy je w "ice_args" ale nie przekazujemy ich do Ice.initialize.
-    # Tu wystarczy proste init - nie potrzebujemy plikow konfiguracyjnych.
     with Ice.initialize() as communicator:
         buildings = connect_buildings(communicator, args.proxy)
         if not buildings:

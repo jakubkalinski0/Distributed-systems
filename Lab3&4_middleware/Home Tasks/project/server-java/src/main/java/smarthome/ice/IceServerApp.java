@@ -18,13 +18,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * Aplikacja serwera Ice. Czyta plik .properties podany w "--config" i:
- *  - tworzy ObjectAdapter "BuildingAdapter" z endpoints z configu;
- *  - rejestruje urzadzenia (po jednym Identity na urzadzenie);
- *  - rejestruje Building servant pod identity "building";
- *  - aktywuje adapter i czeka na shutdown.
- */
 public class IceServerApp {
 
     public static void main(String[] args) {
@@ -48,7 +41,6 @@ public class IceServerApp {
         InitializationData id = new InitializationData();
         id.properties = Util.createProperties();
         id.properties.setProperty("BuildingAdapter.Endpoints", endpoints);
-        // Pula watkow serwera - umozliwia rownolegla obsluge wielu klientow
         id.properties.setProperty("Ice.ThreadPool.Server.Size", "4");
         id.properties.setProperty("Ice.ThreadPool.Server.SizeMax", "8");
         id.properties.setProperty("Ice.Warn.Connections", "1");

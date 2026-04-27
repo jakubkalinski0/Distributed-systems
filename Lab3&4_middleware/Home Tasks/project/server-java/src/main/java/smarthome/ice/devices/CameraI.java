@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class CameraI extends BaseDeviceI implements Camera {
 
-    /** Po piatym wywolaniu snapshot() symulujemy "przegrzanie" - DeviceUnavailable. */
     private static final int FAILURE_AT = 5;
 
     private PTZ ptz;

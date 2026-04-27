@@ -9,14 +9,6 @@ import smarthome.PowerState;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Wspolna baza implementacji wszystkich urzadzen Ice.
- * Trzyma id/kind/buildingName/power oraz dostarcza metody info() i setPower(),
- * a takze pomocniczy logger sluzacy do wypisywania kazdego zdalnego wywolania.
- *
- * Wszystkie mutacje stanu sa synchronizowane (Ice domyslnie obsluguje wywolania
- * na puli watkow Ice.ThreadPool.Server, ustawionej w IceServerApp).
- */
 public abstract class BaseDeviceI implements Device {
 
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -48,7 +40,6 @@ public abstract class BaseDeviceI implements Device {
         this.power = p;
     }
 
-    /** Loguje wywolanie metody na konsole. Format: [HH:mm:ss][building][id] op(args). */
     protected void log(String op, String args) {
         System.out.printf("[%s][%s][%s] %s(%s)%n",
                 LocalTime.now().format(TIME_FMT), building, id, op, args);
