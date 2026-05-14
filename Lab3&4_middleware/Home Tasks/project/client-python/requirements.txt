@@ -1,0 +1,11 @@
+# Klient A1 (Ice 3.7) - wymaga Python 3.11 (brak wheeli dla 3.13)
+zeroc-ice==3.7.10
+
+# Klient I1 (gRPC dynamic invocation) - bez generowanych stubow z smarthome.proto
+grpcio>=1.62
+grpcio-reflection>=1.62
+
+# Protobuf runtime: tylko biblioteczne API (DescriptorPool, MessageFactory).
+# UWAGA: NIE instalujemy 'grpcio-tools' (protoc) na potrzeby klienta I1 -
+# klient buduje deskryptory wylacznie przez gRPC Server Reflection.
+protobuf>=4.25,<5.0

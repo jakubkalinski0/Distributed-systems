@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e7787677-4e7a-4591-b48c-edb9989b3c32" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="3A53uSzlTDT4v7RMoD68EoELFLH" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.OtherSerializations.executor": "Run",
+    "Application.ProtoSerialization.executor": "Run",
+    "Application.sr.serialization.OtherSerializations.executor": "Run",
+    "Application.sr.serialization.ProtoSerialization.executor": "Run",
+    "Maven.serialization-comparison [clean].executor": "Run",
+    "Maven.serialization-comparison [package].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.runner"
+  }
+}]]></component>
+  <component name="RunManager" selected="Application.sr.serialization.ProtoSerialization">
+    <configuration name="OtherSerializations" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="OtherSerializations" />
+      <module name="serialization-comparison" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProtoSerialization" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProtoSerialization" />
+      <module name="serialization-comparison" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sr.serialization.OtherSerializations" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="sr.serialization.OtherSerializations" />
+      <module name="serialization-comparison" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="sr.serialization.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sr.serialization.ProtoSerialization" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="sr.serialization.ProtoSerialization" />
+      <module name="serialization-comparison" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="sr.serialization.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.sr.serialization.ProtoSerialization" />
+        <item itemvalue="Application.sr.serialization.OtherSerializations" />
+        <item itemvalue="Application.OtherSerializations" />
+        <item itemvalue="Application.ProtoSerialization" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e7787677-4e7a-4591-b48c-edb9989b3c32" name="Changes" comment="" />
+      <created>1771868826942</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1771868826942</updated>
+    </task>
+    <servers />
+  </component>
+</project>

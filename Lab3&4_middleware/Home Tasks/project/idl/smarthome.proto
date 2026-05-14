@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package smarthome.dyn;
+
+option java_multiple_files = true;
+option java_package         = "smarthome.grpc.proto";
+option java_outer_classname = "SmartHomeProto";
+
+service DeviceService {
+    rpc ListDevices    (ListRequest)    returns (DeviceList);
+    rpc SetMode        (SetModeRequest) returns (DeviceStatus);
+    rpc StreamReadings (StreamRequest)  returns (stream Reading);
+}
+
+enum Mode {
+    OFF      = 0;
+    HEATING  = 1;
+    COOLING  = 2;
+}
+
+message ListRequest {
+    string kindFilter = 1;
+}
+
+message DeviceList {
+    repeated DeviceStatus devices = 1;
+}
+
+message DeviceStatus {
+    string id   = 1;
+    string kind = 2;
+    bool   on   = 3;
+    map<string, string> attributes = 4;
+}
+
+message SetModeRequest {
+    string deviceId = 1;
+    Mode   mode     = 2;
+}
+
+message StreamRequest {
+    string deviceId   = 1;
+    int32  samples    = 2;
+    int32  intervalMs = 3;
+}
+
+message Reading {
+    string deviceId    = 1;
+    double value       = 2;
+    int64  timestampMs = 3;
+}
