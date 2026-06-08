@@ -1,0 +1,11 @@
+# Lab 6 — lokalny Jupyter (Cursor / VS Code) bez Dockera
+# Wersja zgodna z obrazem rayproject/ray:2.55.1-py310
+ray[default]==2.55.1
+numpy>=1.23
+jupyterlab>=4.0
+ipykernel>=6.0
+ipywidgets>=8.0
+pandas>=2.0
+matplotlib>=3.7
+scikit-learn>=1.3
+requests>=2.28
