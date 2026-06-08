@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZooKeeper Watcher — /a</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>ZooKeeper Watcher</h1>
+    <p class="subtitle">Monitoring znode <code>/a</code> with live watches</p>
+  </header>
+
+  <main>
+    <section class="status-grid">
+      <div class="card">
+        <h2>ZK Connection</h2>
+        <span id="zk-state" class="badge">DISCONNECTED</span>
+      </div>
+      <div class="card">
+        <h2>Znode /a</h2>
+        <span id="node-exists" class="badge">ABSENT</span>
+      </div>
+      <div class="card">
+        <h2>Potomkowie</h2>
+        <span id="child-count" class="metric">0</span>
+      </div>
+      <div class="card">
+        <h2>External App</h2>
+        <span id="external-app" class="badge">STOPPED</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Tree structure under /a</h2>
+      <div id="tree" class="tree empty">Znode /a does not exist yet.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Event log</h2>
+      <ul id="event-log" class="event-log"></ul>
+    </section>
+  </main>
+
+  <div id="toast-container" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
