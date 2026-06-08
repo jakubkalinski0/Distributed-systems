@@ -1,4 +1,4 @@
-# Zadanie domowe — część 2: Chat TCP + dodatkowy kanał UDP (Python)
+# Zadanie domowe - część 2: Chat TCP + dodatkowy kanał UDP (Python)
 
 Wymagania (część 2):
 - serwer i każdy klient mają dodatkowy kanał UDP
@@ -29,7 +29,7 @@ python client.py --host 127.0.0.1 --port 9020 --nick ola --local-port 12002
 
 ## Komendy w kliencie
 
-- tekst → TCP
-- `U` lub `U <tekst>` → UDP (serwer rozsyła do innych)
-- `/quit` → wyjście
+- tekst -> TCP
+- `U` lub `U <tekst>` -> UDP (serwer rozsyła do innych)
+- `/quit` -> wyjście
 

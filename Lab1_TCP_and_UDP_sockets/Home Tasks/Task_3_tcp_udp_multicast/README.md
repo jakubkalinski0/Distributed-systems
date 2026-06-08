@@ -1,4 +1,4 @@
-# Zadanie domowe — część 3: Chat TCP + UDP + Multicast (Python)
+# Zadanie domowe - część 3: Chat TCP + UDP + Multicast (Python)
 
 Wymagania (część 3):
 - multicast ma być **alternatywą** do UDP przez serwer (komenda `M`)
@@ -6,7 +6,7 @@ Wymagania (część 3):
 
 ## Uruchomienie (2 klientów na jednym PC)
 
-Uwaga: jak w części 2 — ustaw różne `--local-port` dla każdego klienta.
+Uwaga: jak w części 2 - ustaw różne `--local-port` dla każdego klienta.
 
 ### Serwer (TCP+UDP)
 
@@ -28,12 +28,12 @@ python client.py --host 127.0.0.1 --port 9020 --nick ola --local-port 12002
 
 ## Komendy w kliencie
 
-- tekst → TCP
-- `U` / `U <tekst>` → UDP przez serwer
-- `M` / `M <tekst>` → multicast (bez serwera)
-- `/quit` → wyjście
+- tekst -> TCP
+- `U` / `U <tekst>` -> UDP przez serwer
+- `M` / `M <tekst>` -> multicast (bez serwera)
+- `/quit` -> wyjście
 
-## Multicast — parametry
+## Multicast - parametry
 
 Domyślnie:
 - grupa: `239.255.0.1`

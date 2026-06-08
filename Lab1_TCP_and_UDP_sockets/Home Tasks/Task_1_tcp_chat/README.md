@@ -1,4 +1,4 @@
-# Zadanie domowe — część 1: Chat przez TCP (Python)
+# Zadanie domowe - część 1: Chat przez TCP (Python)
 
 Wymagania:
 - Klienci łączą się z serwerem przez TCP
@@ -27,6 +27,6 @@ python client.py --host 127.0.0.1 --port 9020 --nick ola
 
 ## Komendy w kliencie
 
-- wpisz tekst i Enter → wysyłka po TCP
-- `/quit` → wyjście
+- wpisz tekst i Enter -> wysyłka po TCP
+- `/quit` -> wyjście
 
