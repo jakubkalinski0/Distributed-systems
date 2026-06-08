@@ -1,4 +1,4 @@
-# Distributed Systems
+# Distributed Systems Course
 
 Solutions and materials for a university distributed systems course. Each lab lives in its own top-level folder and can be run independently.
 
