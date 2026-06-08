@@ -1,0 +1,180 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11T12:00:00.000Z" agent="ChatGPT" version="22.1.0" type="device">
+  <diagram id="rabbitmq-complete" name="RabbitMQ Complete Topology">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1"
+      connect="1" arrows="1" fold="1" page="1" pageScale="1"
+      pageWidth="2400" pageHeight="1800">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- USERS TOP -->
+        <mxCell id="nasa" value="Agency NASA"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;"
+          vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="esa" value="Agency ESA"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;"
+          vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="carrier1" value="Carrier1&#xa;(people,cargo)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;"
+          vertex="1" parent="1">
+          <mxGeometry x="40" y="520" width="170" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="carrier2" value="Carrier2&#xa;(cargo,satellite)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;"
+          vertex="1" parent="1">
+          <mxGeometry x="40" y="620" width="170" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="admin" value="Admin"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;"
+          vertex="1" parent="1">
+          <mxGeometry x="40" y="1180" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- BUSINESS EXCHANGES -->
+        <mxCell id="exorders" value="ex.orders&#xa;(topic, durable)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="420" y="120" width="240" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="exconf" value="ex.confirmations&#xa;(topic, durable)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="420" y="620" width="240" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- AUDIT -->
+        <mxCell id="auditpub" value="publish_with_audit()"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
+          vertex="1" parent="1">
+          <mxGeometry x="390" y="900" width="280" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="exaudit" value="ex.audit&#xa;(fanout, durable)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="420" y="1010" width="240" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- ADMIN -->
+        <mxCell id="exag" value="ex.admin.agencies&#xa;(fanout, durable)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="420" y="1260" width="240" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="excar" value="ex.admin.carriers&#xa;(fanout, durable)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="420" y="1380" width="240" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- ORDER QUEUES -->
+        <mxCell id="qpeople" value="q.orders.people" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1ba1e2;" vertex="1" parent="1">
+          <mxGeometry x="900" y="50" width="220" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="qcargo" value="q.orders.cargo" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1ba1e2;" vertex="1" parent="1">
+          <mxGeometry x="900" y="140" width="220" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="qsat" value="q.orders.satellite" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1ba1e2;" vertex="1" parent="1">
+          <mxGeometry x="900" y="230" width="220" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- CONFIRMATION QUEUES -->
+        <mxCell id="qnasa" value="q.confirmations.nasa" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="900" y="590" width="230" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="qesa" value="q.confirmations.esa" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="900" y="680" width="230" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- AUDIT QUEUE -->
+        <mxCell id="qaudit" value="q.audit.admin" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="900" y="1025" width="220" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- ADMIN QUEUES -->
+        <mxCell id="qanasa" value="q.admin.notify.agency.nasa" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="900" y="1220" width="260" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="qaesa" value="q.admin.notify.agency.esa" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="900" y="1300" width="260" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="qacar1" value="q.admin.notify.carrier.carrier1" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="900" y="1400" width="280" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="qacar2" value="q.admin.notify.carrier.carrier2" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="900" y="1480" width="280" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- ORDER BINDINGS (explicit waypoints so 3 edges do not stack) -->
+        <mxCell id="b1" edge="1" source="exorders" target="qpeople" value="rk: order.people" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;rounded=0;orthogonalLoop=1;" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="160"/>
+              <mxPoint x="700" y="78"/>
+              <mxPoint x="860" y="78"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b2" edge="1" source="exorders" target="qcargo" value="rk: order.cargo" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;rounded=0;orthogonalLoop=1;" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="182"/>
+              <mxPoint x="760" y="168"/>
+              <mxPoint x="880" y="168"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b3" edge="1" source="exorders" target="qsat" value="rk: order.satellite" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;rounded=0;orthogonalLoop=1;" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="840" y="198"/>
+              <mxPoint x="840" y="258"/>
+              <mxPoint x="880" y="258"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- CONFIRMATION BINDINGS -->
+        <mxCell id="b4" edge="1" source="exconf" target="qnasa" value="rk: agency.nasa" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="b5" edge="1" source="exconf" target="qesa" value="rk: agency.esa" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- AUDIT -->
+        <mxCell id="b6" edge="1" source="auditpub" target="exaudit" value="publish copy" style="endArrow=block;html=1;" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="b7" edge="1" source="exaudit" target="qaudit" value='fanout rk=""' style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- ADMIN BINDINGS -->
+        <mxCell id="b8" edge="1" source="exag" target="qanasa" value="fanout" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="b9" edge="1" source="exag" target="qaesa" value="fanout" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="b10" edge="1" source="excar" target="qacar1" value="fanout" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;rounded=0;orthogonalLoop=1;" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="1395"/>
+              <mxPoint x="720" y="1428"/>
+              <mxPoint x="880" y="1428"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b11" edge="1" source="excar" target="qacar2" value="fanout" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;rounded=0;orthogonalLoop=1;" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="860" y="1455"/>
+              <mxPoint x="860" y="1508"/>
+              <mxPoint x="880" y="1508"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
