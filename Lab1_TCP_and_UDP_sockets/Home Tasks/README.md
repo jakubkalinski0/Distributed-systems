@@ -1,10 +1,9 @@
-# Zadanie domowe (Lab1) - Python
+# Lab 1 Home Task (Python)
 
-Zostawiłem **tylko zadanie domowe** podzielone na 3 części (każda w osobnym folderze), tak żeby część 2 minimalnie rozszerzała część 1, a część 3 minimalnie rozszerzała część 2:
+Three incremental parts, each in its own folder. Part 2 extends part 1 with UDP; part 3 adds multicast.
 
-- `Task_1_tcp_chat/` - chat TCP (wielowątkowy, broadcast do innych)
-- `Task_2_tcp_udp/` - + kanał UDP (komenda `U`)
-- `Task_3_tcp_udp_multicast/` - + multicast (komenda `M`)
+- `Task_1_tcp_chat/` - multithreaded TCP chat with broadcast
+- `Task_2_tcp_udp/` - TCP chat plus UDP channel (command `U`)
+- `Task_3_tcp_udp_multicast/` - TCP, UDP, and multicast (command `M`)
 
-W każdym folderze jest `README.md` z komendami uruchomienia.
-
+Each folder has a `README.md` with run commands.

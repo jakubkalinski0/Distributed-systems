@@ -47,10 +47,10 @@ Distributed computing with Ray. Tier 1 covers tasks, actors, and object store us
 
 | Part | Folder | Topic |
 |------|--------|-------|
-| Tier 1 | [notebook/lab-ray.ipynb](Lab6_ray/for-students/notebook/lab-ray.ipynb) | Ray fundamentals |
-| Tier 2 | [hdfs](Lab6_ray/for-students/hdfs/) and [tier2-hdfs.ipynb](Lab6_ray/for-students/notebook/tier2-hdfs.ipynb) | Distributed artifact storage |
+| Tier 1 | [notebook/lab-ray.ipynb](Lab6_ray/notebook/lab-ray.ipynb) | Ray fundamentals |
+| Tier 2 | [hdfs](Lab6_ray/hdfs/) and [tier2-hdfs.ipynb](Lab6_ray/notebook/tier2-hdfs.ipynb) | Distributed artifact storage |
 
-See [URUCHOMIENIE-TIER1.md](Lab6_ray/for-students/URUCHOMIENIE-TIER1.md) and [URUCHOMIENIE-TIER2.md](Lab6_ray/for-students/URUCHOMIENIE-TIER2.md) for Docker setup.
+See [Lab6_ray/README.md](Lab6_ray/README.md) for Docker setup.
 
 ### Lab 7: Apache ZooKeeper
 

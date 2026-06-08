@@ -4,10 +4,10 @@ System pośredniczący w RabbitMQ między agencjami kosmicznymi a przewoźnikami
 
 Domyślny scenariusz demo używa agencji `nasa`, `esa` i przewoźników `carrier1`, `carrier2`, ale CLI akceptuje także inne identyfikatory (`[a-z0-9_-]`).
 
-## Schemat topologii (wymóg zadania)
+## Topology diagram
 
-- Edytowalny diagram diagrams.net: [docs/topologia.drawio](docs/topologia.drawio)
-- Grafika elektroniczna (SVG): [docs/topologia.drawio.svg](docs/topologia.drawio.svg)
+- Editable diagrams.net file: [docs/topology.drawio](docs/topology.drawio)
+- SVG export: [docs/topology.drawio.svg](docs/topology.drawio.svg)
 
 ## Wymagania
 
